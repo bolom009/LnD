@@ -66,7 +66,7 @@ func (f *Field) LivingNeighbors(x, y int) int {
 	alive := 0
 	for i := -1; i <= 1; i++ {
 		for j := -1; j <= 1; j++ {
-			if j != 0 || i != 0 && f.getVitality(x+i, y+j) > 0 {
+			if (j != 0 || i != 0) && f.getVitality(x+i, y+j) > 0 {
 				alive++
 			}
 		}
