@@ -11,6 +11,7 @@ const (
 	_maxLivingNeighbors = 3
 )
 
+// GenerateField make new random field
 func GenerateField(width, height int) *Field {
 	rand.Seed(time.Now().UnixNano())
 
@@ -43,6 +44,7 @@ func (f *Field) setVitality(x, y int, vitality int) {
 	f.cells[y][x] = vitality
 }
 
+// GetCells return values of field cells
 func (f *Field) GetCells() [][]int {
 	return f.cells
 }
@@ -62,6 +64,7 @@ func (f *Field) getCellShift(x, y int) (int, int) {
 	return x, y
 }
 
+// LivingNeighbors return alive neighbors
 func (f *Field) LivingNeighbors(x, y int) int {
 	alive := 0
 	for i := -1; i <= 1; i++ {
@@ -75,9 +78,14 @@ func (f *Field) LivingNeighbors(x, y int) int {
 	return alive
 }
 
+// NextVitality return next status of cell (alive or dead)
 func (f *Field) NextVitality(x, y int) int {
 	livingNeighbors := f.LivingNeighbors(x, y)
 	isLiving := f.getVitality(x, y) > 0
+	//1. Any live cell with fewer than two live neighbors dies as if caused by underpopulation.
+	//2. Any live cell with two or three live neighbors lives on to the next generation.
+	//3. Any live cell with more than three live neighbors dies, as if by overcrowding.
+	//4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
 	if livingNeighbors == _maxLivingNeighbors || livingNeighbors == _maxLivingNeighbors-1 && isLiving {
 		return _alive
 	}
@@ -85,6 +93,7 @@ func (f *Field) NextVitality(x, y int) int {
 	return _dead
 }
 
+// NextRound run new round for field
 func (f *Field) NextRound() *Field {
 	field := newField(f.width, f.height)
 	for y := 0; y < f.height; y++ {
