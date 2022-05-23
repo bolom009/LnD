@@ -1,0 +1,8 @@
+For play this game you need just press enter and look into the folder snapshots, have a fun :)
+
+Setup:
+- go mod tidy
+
+Commands:
+- go run main.go (run game with cells 25x25, snapshots will save into path ./snapshots/)
+- go run main.go -w 10 -h 10 (recommended, run game with cells 10x10 and snapshots will save into path ./snapshots/)
