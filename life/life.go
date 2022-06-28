@@ -1,6 +1,7 @@
 package life
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -11,13 +12,45 @@ const (
 	_maxLivingNeighbors = 3
 )
 
+var randGlider = [][]int{
+	{
+		1, 0, 0,
+		0, 1, 1,
+		1, 1, 0,
+	},
+	{
+		0, 1, 0,
+		0, 0, 1,
+		1, 1, 1,
+	},
+	{
+		0, 0, 1,
+		1, 0, 1,
+		0, 1, 1,
+	},
+}
+
 // GenerateField make new random field
 func GenerateField(width, height int) *Field {
 	rand.Seed(time.Now().UnixNano())
 
-	field := newField(width, height)
-	for i := 0; i < (width * height / 2); i++ {
-		field.setVitality(rand.Intn(width), rand.Intn(height), _alive)
+	var (
+		glider = randGlider[rand.Intn(len(randGlider)-1)]
+		field  = newField(width, height)
+		x      = int(math.Round(float64(width) / 3))
+		y      = x
+		i      = 0
+	)
+
+	for _, st := range glider {
+		field.setVitality(x+i, y, st)
+		if i == 2 {
+			i = 0
+			y++
+			continue
+		}
+
+		i++
 	}
 
 	return field

@@ -26,6 +26,18 @@ func main() {
 	flag.IntVar(&height, "h", 25, "height game field")
 	flag.Parse()
 
+	if width != height {
+		_, _ = fmt.Println("width and height should be equal")
+		os.Exit(1)
+		return
+	}
+
+	if width < 5 || height < 5 {
+		_, _ = fmt.Println("width and height should have values x>4")
+		os.Exit(1)
+		return
+	}
+
 	if err := removeContents(snapshotsPath); err != nil {
 		_ = fmt.Errorf("%v\n", err)
 		os.Exit(1)
